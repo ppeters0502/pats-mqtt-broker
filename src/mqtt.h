@@ -53,3 +53,30 @@ union mqtt_header {
 		unsigned type : 4
 	} bits;
 };
+
+struct mqtt_connect {
+
+	union mqtt_header header;
+	union {
+
+		unsigned char byte;
+		struct {
+			int reserverd : 1;
+			unsigned clean_session : 1;
+			unsigned will : 1;
+			unsigned will_qos : 2;
+			unsigned will_retain : 1;
+			unsigned password : 1;
+			unsigned username : 1;
+		} bits;
+	};
+
+	struct {
+		unsigned short keepalive;
+		unsigned char *client_id;
+		unsigned char *username;
+		unsigned char *password;
+		unsigned char *will_topic;
+		unsigned char *will_message;
+	} payload;
+};
