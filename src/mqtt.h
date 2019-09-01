@@ -43,6 +43,10 @@ enum message_type {
 
 enum qos_level {AT_MOST_ONCE, AT_LEAST_ONCE, EXACTLY_ONCE };
 
+/*
+* MQTT_HEADER
+* Primary union used in all of the other packet definitions.
+*/
 union mqtt_header {
 	unsigned char byte;
 
@@ -80,3 +84,75 @@ struct mqtt_connect {
 		unsigned char *will_message;
 	} payload;
 };
+
+
+struct mqtt_connack {
+
+	union mqtt_header header;
+
+	union {
+
+		unsigned char byte;
+		struct {
+			unsigned session_present : 1;
+			unsigned reserved : 7;
+		} bits;
+	};
+
+	unsigned char rc;
+};
+
+struct mqtt_subscribe {
+
+	union mqtt_header header;
+	unsigned short pkt_id;
+	unsigned short tuples_len;
+
+	struct {
+		unsigned short topic_len;
+		unsigned char *topic;
+		unsigned qos;
+	} *tuples;
+};
+
+struct mqtt_unsubscribe {
+	union mqtt_header header;
+
+	unsigned short pkt_id;
+
+	unsigned short tuples_len;
+
+	struct {
+		unsigned short topic_len;
+		unsigned char *topic;
+	} *tuples;
+};
+
+struct mqtt_suback {
+
+	union mqtt_header header;
+
+	unsigned short pkt_id;
+
+	unsigned short rcslen;
+
+	unsigned char *rcs;
+};
+
+struct mqtt_publish {
+
+	union mqtt_header header;
+
+	unsigned short pkt_id;
+
+	unsigned short topiclen;
+	unsigned char *topic;
+	unsigned short payloadlen;
+	unsigned char *payload;
+};
+
+struct mqtt_ack {
+	union mqtt_header header;
+
+	unsigned short pkt_id;
+}
