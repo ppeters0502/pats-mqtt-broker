@@ -155,4 +155,20 @@ struct mqtt_ack {
 	union mqtt_header header;
 
 	unsigned short pkt_id;
-}
+};
+/**
+ *
+ * The rest of the ACK packets can be obtained 
+ * through typedefing struct ack
+ *
+ */
+
+typedef struct mqtt_ack mqtt_puback;
+typedef struct mqtt_ack mqtt_pubrec;
+typedef struct mqtt_ack mqtt_pubrel;
+typedef struct mqtt_ack mqtt_pubcomp;
+typedef struct mqtt_ack mqtt_unsuback;
+typedef union mqtt_header mqtt_pingreq;
+typedef union mqtt_header mqtt_pingresp;
+typedef union mqtt_header mqtt_disconnect;
+
